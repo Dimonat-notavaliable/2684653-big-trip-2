@@ -1,7 +1,7 @@
 # Проект «Большое путешествие»
 
 * Студент: [Дмитрий Шушин](https://up.htmlacademy.ru/ecmascript-individual/2/user/2684653).
-* Наставник: `Неизвестно`.
+* Наставник: [Кексобот](https://pin.it/3LaWDgtlZ).
 
 ---
 
