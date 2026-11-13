@@ -1,9 +1,5 @@
 import dayjs from 'dayjs';
 
-const DATE_FORMAT = 'MMM D';
-const DATE_FORM_FORMAT = 'DD/MM/YY HH:mm';
-const TIME_FORMAT = 'HH:mm';
-
 const MINUTE_MS = 60000;
 const HOUR_MINUTES = 60;
 const DAY_HOURS = 24;
@@ -19,9 +15,7 @@ const titleString = (string) => {
   return capitalized.join(' ');
 };
 
-const humanizeEventDate = (datetime) => dayjs(datetime).format(DATE_FORMAT);
-const humanizeEventTime = (datetime) => dayjs(datetime).format(TIME_FORMAT);
-const formatFormTime = (datetime) => dayjs(datetime).format(DATE_FORM_FORMAT);
+const humanizeDate = (datetime, format) => dayjs(datetime).format(format);
 
 const calcEventDuration = (startTime, endTime) => {
   const timeDifferenceMinutes = Math.trunc((endTime - startTime) / MINUTE_MS);
@@ -35,4 +29,18 @@ const calcEventDuration = (startTime, endTime) => {
   return resultDuration;
 };
 
-export {getRandomArrayElement, titleString, humanizeEventDate, humanizeEventTime, calcEventDuration, formatFormTime};
+
+const getOfferSlug = (offer) => {
+  const splittedOffer = offer.split(' ');
+  return splittedOffer[splittedOffer.length - 1];
+};
+
+const getTypeOffers = (eventType, offers) => {
+  const filtered = offers.find(({type}) => type === eventType);
+  if (filtered) {
+    return filtered['offers'];
+  }
+  return [];
+};
+
+export {getRandomArrayElement, titleString, humanizeDate, calcEventDuration, getOfferSlug, getTypeOffers};

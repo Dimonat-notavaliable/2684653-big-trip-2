@@ -1,5 +1,6 @@
 import { createElement } from '../render.js';
-import { titleString, humanizeEventDate, humanizeEventTime, calcEventDuration } from '../utils.js';
+import { titleString, humanizeDate, calcEventDuration } from '../utils.js';
+import { DateFormat } from '../const.js';
 
 function createEventOffersTemplate(offers) {
   return (
@@ -16,19 +17,15 @@ function createEventOffersTemplate(offers) {
 function createEventTemplate(event, offers, destination) {
   const {type, basePrice, dateFrom, dateTo, isFavorite} = event;
 
-  const startDay = dateFrom.split('T')[0];
-
   const startDateTime = new Date(dateFrom);
   const endDateTime = new Date (dateTo);
 
-  const startDate = humanizeEventDate(startDateTime);
-  const endDate = humanizeEventDate(endDateTime);
+  const startDay = dateFrom.split('T')[0];
+  const startDate = humanizeDate(startDateTime, DateFormat.ONLY_DATE);
 
-  const startTime = humanizeEventTime(startDateTime);
-  const endTime = humanizeEventTime(endDateTime);
+  const startTime = humanizeDate(startDateTime, DateFormat.ONLY_TIME);
+  const endTime = humanizeDate(endDateTime, DateFormat.ONLY_TIME);
   const eventDuration = calcEventDuration(startDateTime, endDateTime);
-
-  const eventDate = (startDate === endDate) ? startDate : `${startDate}`;
 
   const selectedOffers = createEventOffersTemplate(offers);
 
@@ -39,7 +36,7 @@ function createEventTemplate(event, offers, destination) {
   return (
     `<li class="trip-events__item">
       <div class="event">
-        <time class="event__date" datetime="${startDay}">${eventDate}</time>
+        <time class="event__date" datetime="${startDay}">${startDate}</time>
         <div class="event__type">
           <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
         </div>
