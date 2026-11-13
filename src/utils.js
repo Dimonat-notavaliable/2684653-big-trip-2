@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 
 const DATE_FORMAT = 'MMM D';
+const DATE_FORM_FORMAT = 'DD/MM/YY HH:mm';
 const TIME_FORMAT = 'HH:mm';
 
 const MINUTE_MS = 60000;
@@ -20,6 +21,7 @@ const titleString = (string) => {
 
 const humanizeEventDate = (datetime) => dayjs(datetime).format(DATE_FORMAT);
 const humanizeEventTime = (datetime) => dayjs(datetime).format(TIME_FORMAT);
+const formatFormTime = (datetime) => dayjs(datetime).format(DATE_FORM_FORMAT);
 
 const calcEventDuration = (startTime, endTime) => {
   const timeDifferenceMinutes = Math.trunc((endTime - startTime) / MINUTE_MS);
@@ -33,4 +35,4 @@ const calcEventDuration = (startTime, endTime) => {
   return resultDuration;
 };
 
-export {getRandomArrayElement, titleString, humanizeEventDate, humanizeEventTime, calcEventDuration};
+export {getRandomArrayElement, titleString, humanizeEventDate, humanizeEventTime, calcEventDuration, formatFormTime};

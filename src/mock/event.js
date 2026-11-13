@@ -148,17 +148,23 @@ const mockEvents = [
   },
 ];
 
-const getEventPossibleOffers = (event) => {
-  const filtered = OFFERS.find(({type}) => type === event.type);
+const getTypeOffers = (eventType) => {
+  const filtered = OFFERS.find(({type}) => type === eventType);
   if (filtered) {
     return filtered['offers'];
   }
   return [];
 };
-const getEventSelectedOffers = (event) => getEventPossibleOffers(event).filter(({id}) => event.offers.indexOf(id) !== -1);
+
+const getOfferSlug = (offer) => {
+  const splittedOffer = offer.split(' ');
+  return splittedOffer[splittedOffer.length - 1];
+};
+
+const getEventOffers = (event) => getTypeOffers(event.type).filter(({id}) => event.offers.indexOf(id) !== -1);
 
 const getEventDestination = (event) => DESTINATIONS.find(({id}) => id === event.destination);
 
 const getRandomEvent = () => getRandomArrayElement(mockEvents);
 
-export {getRandomEvent, getEventPossibleOffers, getEventSelectedOffers, getEventDestination};
+export {getRandomEvent, getTypeOffers, getEventOffers, getEventDestination, DESTINATIONS, getOfferSlug};
