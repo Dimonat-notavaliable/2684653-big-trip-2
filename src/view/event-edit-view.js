@@ -1,6 +1,6 @@
-import { createElement } from '../render.js';
 import { EVENT_TYPES, DateFormat } from '../const.js';
 import { titleString, humanizeDate, getOfferSlug, getTypeOffers } from '../utils.js';
+import AbstractView from '../framework/view/abstract-view.js';
 
 const BLANK_EVENT = {
   basePrice: 0,
@@ -120,26 +120,20 @@ function createEventEditTemplate(event, offers, destinations) {
   );
 }
 
-export default class EventEditView {
+export default class EventEditView extends AbstractView {
+  #event = null;
+  #offers = null;
+  #destinations = null;
+
   constructor({event = BLANK_EVENT, offers, destinations}) {
-    this.event = event;
-    this.offers = offers;
-    this.destinations = destinations;
+    super();
+
+    this.#event = event;
+    this.#offers = offers;
+    this.#destinations = destinations;
   }
 
-  getTemplate() {
-    return createEventEditTemplate(this.event, this.offers, this.destinations);
-  }
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-  }
-
-  removeElement(){
-    this.element = null;
+  get template() {
+    return createEventEditTemplate(this.#event, this.#offers, this.#destinations);
   }
 }
