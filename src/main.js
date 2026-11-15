@@ -1,7 +1,7 @@
 import FilterView from './view/filter-view.js';
 import TripInfoView from './view/trip-info-view.js';
 import { render, RenderPosition } from './framework/render.js';
-import EventsListPresenter from './presenter/events-presenter.js';
+import EventsListPresenter from './presenter/events-list-presenter.js';
 import EventModel from './model/event-model.js';
 
 const siteTripMainElement = document.querySelector('.trip-main');

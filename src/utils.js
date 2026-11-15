@@ -43,4 +43,11 @@ const getTypeOffers = (eventType, offers) => {
   return [];
 };
 
-export {getRandomArrayElement, titleString, humanizeDate, calcEventDuration, getOfferSlug, getTypeOffers};
+/**
+ * Проверяет, является ли нажатая клавиша клавишей Escape.
+ * @param {KeyboardEvent} evt - Объект события клавиатуры
+ * @returns {boolean} Возвращает `true`, если нажата клавиша Escape, иначе `false`
+ */
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
+export {getRandomArrayElement, titleString, humanizeDate, calcEventDuration, getOfferSlug, getTypeOffers, isEscapeKey};
