@@ -1,5 +1,6 @@
 import { EVENT_TYPES, DateFormat } from '../const.js';
-import { titleString, humanizeDate, getOfferSlug, getTypeOffers } from '../utils.js';
+import { titleString, humanizeDate } from '../utils/common.js';
+import { getOfferSlug, getTypeOffers } from '../utils/offer.js';
 import AbstractView from '../framework/view/abstract-view.js';
 
 const BLANK_EVENT = {

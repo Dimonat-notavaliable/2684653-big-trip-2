@@ -1,7 +1,7 @@
 import { getRandomEvent } from '../mock/event.js';
 import { mockDestinations } from '../mock/destinations.js';
 import { mockOffers } from '../mock/offers.js';
-import { getTypeOffers } from '../utils.js';
+import { getTypeOffers } from '../utils/offer.js';
 
 const EVENT_COUNT = 4;
 

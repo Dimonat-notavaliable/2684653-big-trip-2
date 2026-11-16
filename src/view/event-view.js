@@ -1,4 +1,5 @@
-import { titleString, humanizeDate, calcEventDuration } from '../utils.js';
+import { titleString, humanizeDate } from '../utils/common.js';
+import { humanizeEventDuration } from '../utils/event.js';
 import { DateFormat } from '../const.js';
 import AbstractView from '../framework/view/abstract-view.js';
 
@@ -25,7 +26,7 @@ function createEventTemplate(event, offers, destination) {
 
   const startTime = humanizeDate(startDateTime, DateFormat.ONLY_TIME);
   const endTime = humanizeDate(endDateTime, DateFormat.ONLY_TIME);
-  const eventDuration = calcEventDuration(startDateTime, endDateTime);
+  const eventDuration = humanizeEventDuration(startDateTime, endDateTime);
 
   const selectedOffers = createEventOffersTemplate(offers);
 
