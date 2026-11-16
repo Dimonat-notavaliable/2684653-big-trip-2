@@ -1,6 +1,6 @@
 import EventView from '../view/event-view.js';
 import EventEditView from '../view/event-edit-view.js';
-import { isEscapeKey } from '../utils.js';
+import { isEscapeKey } from '../utils/common.js';
 import { render, replace } from '../framework/render.js';
 
 export default class EventPresenter {
