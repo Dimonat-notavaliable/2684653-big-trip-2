@@ -20,4 +20,6 @@ const humanizeDate = (datetime, format) => dayjs(datetime).format(format);
  */
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-export {getRandomArrayElement, titleString, humanizeDate, isEscapeKey};
+const updateItem = (items, updated) => items.map((item) => item.id === updated.id ? updated : item);
+
+export {getRandomArrayElement, titleString, humanizeDate, isEscapeKey, updateItem};

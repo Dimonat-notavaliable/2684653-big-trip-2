@@ -45,4 +45,4 @@ const mockEvents = [
 
 const getRandomEvent = () => getRandomArrayElement(mockEvents);
 
-export {getRandomEvent};
+export {getRandomEvent, mockEvents};
