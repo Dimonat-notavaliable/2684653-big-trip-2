@@ -9,7 +9,11 @@ const humanizeEventDuration = (startTime, endTime) => {
   let resultDuration = `${timeDifferenceMinutes % HOUR_MINUTES}M`;
 
   if (timeDifferenceMinutes >= HOUR_MINUTES) {
-    resultDuration = `${Math.trunc(timeDifferenceMinutes % (HOUR_MINUTES * DAY_HOURS) / HOUR_MINUTES)} H ${resultDuration}`;
+    resultDuration = `${Math.trunc(timeDifferenceMinutes % (HOUR_MINUTES * DAY_HOURS) / HOUR_MINUTES)}H ${resultDuration}`;
+  }
+
+  if (timeDifferenceMinutes >= HOUR_MINUTES * DAY_HOURS) {
+    resultDuration = `${Math.trunc(timeDifferenceMinutes / (HOUR_MINUTES * DAY_HOURS))}D ${resultDuration}`;
   }
 
   return resultDuration;
