@@ -54,7 +54,6 @@ export default class EventPresenter {
       onFormSubmit: this.#handleFormSubmit
     });
 
-    // render(this.#eventComponent, this.#eventContainer);
     if (prevEventComponent === null || prevEventEditComponent === null) {
       render(this.#eventComponent, this.#eventContainer);
       return;
@@ -72,7 +71,7 @@ export default class EventPresenter {
     remove(prevEventEditComponent);
   }
 
-  #destroy() {
+  destroy() {
     remove(this.#eventComponent);
     remove(this.#eventEditComponent);
   }

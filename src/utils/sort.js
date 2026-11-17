@@ -14,10 +14,10 @@ const compareEventDuration = (eventA, eventB) => {
 const compareEventPrice = (eventA, eventB) => getEventPrice(eventB, eventModel.getEventOffers(eventB)) - getEventPrice(eventA, eventModel.getEventOffers(eventA));
 
 const eventSort = {
-  [SortType.DAY]: (events) => events.sort(compareEventStart),
+  [SortType.DAY]: compareEventStart,
   [SortType.EVENT]: null,
-  [SortType.TIME]: (events) => events.sort(compareEventDuration),
-  [SortType.PRICE]: (events) => events.sort(compareEventPrice),
+  [SortType.TIME]: compareEventDuration,
+  [SortType.PRICE]: compareEventPrice,
   [SortType.OFFER]: null
 };
 
