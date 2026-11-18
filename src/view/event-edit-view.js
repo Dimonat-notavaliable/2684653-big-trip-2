@@ -67,11 +67,28 @@ function createEventEditOffersTemplate(eventId, eventOffers, typeOffers) {
   );
 }
 
+function createDestinationInfoTemplate(destinationDescription, photos) {
+  photos = photos ?? [];
+
+  return (
+    `<section class="event__section  event__section--destination">
+      <h3 class="event__section-title  event__section-title--destination">Destination</h3>
+      <p class="event__destination-description">${destinationDescription || ''}</p>
+      ${photos.length > 0 ? `<div class="event__photos-container">
+        <div class="event__photos-tape">
+          ${photos.map(({src, description}) => `<img class="event__photo" src="${src}" alt="${description}">`).join('')}
+        </div>
+      </div>` : ''}
+    </section>`
+  );
+
+}
+
 function createEventEditTemplate(event, offers, destinations) {
   const {id: eventId, basePrice, dateFrom, dateTo, type, offers: selectedOffers, destination: destinationId} = event;
   const selectedDestination = destinations.find(({id}) => id === destinationId);
 
-  const {name, description} = selectedDestination || {};
+  const {name, description, pictures} = selectedDestination || {};
 
   const startDateTime = humanizeDate(dateFrom ? new Date(dateFrom) : new Date(), DateFormat.FORM);
   const endDateTime = humanizeDate(dateTo ? new Date(dateTo) : new Date(), DateFormat.FORM);
@@ -79,6 +96,8 @@ function createEventEditTemplate(event, offers, destinations) {
   const editTypeElement = createEventEditTypeTemplate(eventId, type);
   const editDestinationElement = createEventEditDestinationTemplate(eventId, type, name, destinations);
   const editOffersElement = createEventEditOffersTemplate(eventId, selectedOffers, getTypeOffers(type, offers));
+
+  const destinationInfoElement = createDestinationInfoTemplate(description, pictures);
 
   return (
     `<li class="trip-events__item">
@@ -111,10 +130,7 @@ function createEventEditTemplate(event, offers, destinations) {
         </header>
         <section class="event__details">
           ${editOffersElement}
-          <section class="event__section  event__section--destination">
-            <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-            <p class="event__destination-description">${description || ''}</p>
-          </section>
+          ${destinationInfoElement}
         </section>
       </form>
     </li>`

@@ -5,11 +5,11 @@ const mockDestinations = [
     name: 'Amsterdam',
     pictures: [
       {
-        src: '1.jpg',
+        src: 'img/photos/1.jpg',
         description: 'Event picture'
       },
       {
-        src: '2.jpg',
+        src: 'img/photos/2.jpg',
         description: 'Event picture'
       }
     ]
@@ -20,11 +20,11 @@ const mockDestinations = [
     name: 'Geneva',
     pictures: [
       {
-        src: '3.jpg',
+        src: 'img/photos/3.jpg',
         description: 'Event picture'
       },
       {
-        src: '4.jpg',
+        src: 'img/photos/4.jpg',
         description: 'Event picture'
       }
     ]
@@ -35,7 +35,7 @@ const mockDestinations = [
     name: 'Chamonix',
     pictures: [
       {
-        src: '5.jpg',
+        src: 'img/photos/5.jpg',
         description: 'Event picture'
       }
     ]
