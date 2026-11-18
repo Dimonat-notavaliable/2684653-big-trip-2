@@ -117,8 +117,8 @@ export default class EventPresenter {
   #escKeyDownHandler = (evt) => {
     if(isEscapeKey(evt)) {
       evt.preventDefault();
+      this.#eventEditComponent.reset(this.#event);
       this.#replaceFormToRow();
-      document.removeEventListener('keydown', this.#escKeyDownHandler);
     }
   };
 }
