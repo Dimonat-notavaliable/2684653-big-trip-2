@@ -22,4 +22,11 @@ const isEscapeKey = (evt) => evt.key === 'Escape';
 
 const updateItem = (items, updated) => items.map((item) => item.id === updated.id ? updated : item);
 
-export {getRandomArrayElement, titleString, humanizeDate, isEscapeKey, updateItem};
+/**
+ * Преобразует дату в строку вида `2019-04-08T06:45`
+ * @param {Date} date - Дата для обработки
+ * @returns {string} Преобразованная дата
+ */
+const parseDateToISO = (date) => date.toISOString().slice(0, -8)
+
+export {getRandomArrayElement, titleString, humanizeDate, isEscapeKey, updateItem, parseDateToISO};
