@@ -16,7 +16,7 @@ export default class EventsListPresenter {
   #currentSortType = SortType.DAY;
 
   #eventsListComponent = new EventListView();
-  #noEventsComponent = new NoEventView();
+  #noEventsComponent = null;
 
   #eventPresenters = new Map();
 
@@ -116,6 +116,12 @@ export default class EventsListPresenter {
   }
 
   #renderNoEvents() {
+    const filterType = this.#filterModel.filter;
+
+    this.#noEventsComponent = new NoEventView({
+      filterType
+    });
+
     render(this.#noEventsComponent, this.#eventsListContainer);
   }
 

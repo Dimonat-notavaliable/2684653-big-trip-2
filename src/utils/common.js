@@ -25,6 +25,6 @@ const isEscapeKey = (evt) => evt.key === 'Escape';
  * @param {Date} date - Дата для обработки
  * @returns {string} Преобразованная дата
  */
-const parseDateToISO = (date) => date.toISOString().slice(0, -8)
+const parseDateToISO = (date) => date.toISOString().slice(0, -8);
 
 export {getRandomArrayElement, titleString, humanizeDate, isEscapeKey, parseDateToISO};
