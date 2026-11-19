@@ -5,10 +5,12 @@ import { render, remove } from '../framework/render.js';
 import NoEventView from '../view/no-event-view.js';
 import { eventSort } from '../utils/sort.js';
 import { SortType, UserAction, UpdateType } from '../const.js';
+import { filter } from '../utils/filter.js';
 
 export default class EventsListPresenter {
   #eventsListContainer = null;
   #eventModel = null;
+  #filterModel = null;
 
   #sortPresenter = null;
   #currentSortType = SortType.DAY;
@@ -18,19 +20,25 @@ export default class EventsListPresenter {
 
   #eventPresenters = new Map();
 
-  constructor ({eventsListContaier, eventModel}) {
+  constructor ({eventsListContaier, eventModel, filterModel}) {
     this.#eventsListContainer = eventsListContaier;
     this.#eventModel = eventModel;
+    this.#filterModel = filterModel;
 
     this.#eventModel.addObserver(this.#handleModelEvent);
+    this.#filterModel.addObserver(this.#handleModelEvent);
   }
 
   get events() {
+    const filterType = this.#filterModel.filter;
+    const events = this.#eventModel.events;
+    const filteredEvents = filter[filterType](events);
+
     const sortFunc = eventSort[this.#currentSortType];
     if (sortFunc) {
-      return [...this.#eventModel.events].sort(sortFunc);
+      return filteredEvents.sort(sortFunc);
     }
-    return this.#eventModel.events;
+    return filteredEvents;
   }
 
   init() {
