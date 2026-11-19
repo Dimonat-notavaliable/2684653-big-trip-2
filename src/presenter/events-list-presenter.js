@@ -4,8 +4,9 @@ import SortPresenter from './sort-presenter.js';
 import { render, remove } from '../framework/render.js';
 import NoEventView from '../view/no-event-view.js';
 import { eventSort } from '../utils/sort.js';
-import { SortType, UserAction, UpdateType } from '../const.js';
+import { SortType, UserAction, UpdateType, FilterType } from '../const.js';
 import { filter } from '../utils/filter.js';
+import NewEventPresenter from './new-event-presenter.js';
 
 export default class EventsListPresenter {
   #eventsListContainer = null;
@@ -18,12 +19,21 @@ export default class EventsListPresenter {
   #eventsListComponent = new EventListView();
   #noEventsComponent = null;
 
+  #newEventPresenter = null;
+
   #eventPresenters = new Map();
 
-  constructor ({eventsListContaier, eventModel, filterModel}) {
+  constructor ({eventsListContaier, eventModel, filterModel, onNewEventDestroy}) {
     this.#eventsListContainer = eventsListContaier;
     this.#eventModel = eventModel;
     this.#filterModel = filterModel;
+
+    this.#newEventPresenter = new NewEventPresenter({
+      newEventContainer: this.#eventsListComponent.element,
+      eventModel: this.#eventModel,
+      onDataChange: this.#handleViewAction,
+      onDestroy: onNewEventDestroy
+    });
 
     this.#eventModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
@@ -39,6 +49,12 @@ export default class EventsListPresenter {
       return filteredEvents.sort(sortFunc);
     }
     return filteredEvents;
+  }
+
+  openNewEventForm() {
+    this.#currentSortType = SortType.DAY;
+    this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
+    this.#newEventPresenter.init();
   }
 
   init() {
@@ -92,7 +108,7 @@ export default class EventsListPresenter {
 
   #renderSort() {
     this.#sortPresenter = new SortPresenter({
-      sortContainer: this.#eventsListComponent.element,
+      sortFollower: this.#eventsListComponent.element,
       onDataChange: this.#handleSortTypeChange
     });
 

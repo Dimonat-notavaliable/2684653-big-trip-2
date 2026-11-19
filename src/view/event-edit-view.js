@@ -10,9 +10,9 @@ const FLATPICKR_FORMAT = 'd/m/y H:i';
 
 const BLANK_EVENT = {
   basePrice: 0,
-  dateFrom: null,
-  dateTo: null,
-  destination: '',
+  dateFrom: parseDateToISO(new Date()),
+  dateTo: parseDateToISO(new Date()),
+  destination: null,
   isFavorite: false,
   offers: [],
   type: 'flight'
@@ -46,10 +46,10 @@ function createEventEditDestinationTemplate(eventId, eventType, destinationName,
       <label class="event__label  event__type-output" for="event-destination-${eventId}">
         ${titleString(eventType)}
       </label>
-      <input class="event__input  event__input--destination" id="event-destination-${eventId}" type="text" name="event-destination" value="${destinationName || ''}" list="destination-list-${eventId}">
-      <datalist id="destination-list-${eventId}">
-        ${destinations.map(({name}) => `<option value="${name}">${name}</option>`).join('')}
-      </datalist>
+      <select class="event__input  event__input--destination" id="event-destination-${eventId}" name="event-destination" required>
+        <option style="display: none" disabled ${destinationName ? '' : 'selected'} value> -- select destination -- </option>
+        ${destinations.map(({name}) => `<option value="${name}" ${name === destinationName ? 'selected' : ''}>${name}</option>`).join('')}
+      </select>
     </div>`
   );
 }
@@ -118,10 +118,10 @@ function createEventEditTemplate(event, offers, destinations) {
 
           <div class="event__field-group  event__field-group--time">
             <label class="visually-hidden" for="event-start-time-${eventId}">From</label>
-            <input class="event__input  event__input--time" id="event-start-time-${eventId}" type="text" name="event-start-time" value="${startDateTime}">
+            <input class="event__input  event__input--time" id="event-start-time-${eventId}" type="text" name="event-start-time" value="${startDateTime}" required>
             —
             <label class="visually-hidden" for="event-end-time-${eventId}">To</label>
-            <input class="event__input  event__input--time" id="event-end-time-${eventId}" type="text" name="event-end-time" value="${endDateTime}">
+            <input class="event__input  event__input--time" id="event-end-time-${eventId}" type="text" name="event-end-time" value="${endDateTime}" required>
           </div>
 
           <div class="event__field-group  event__field-group--price">
@@ -129,7 +129,7 @@ function createEventEditTemplate(event, offers, destinations) {
               <span class="visually-hidden">Price</span>
               €
             </label>
-            <input class="event__input  event__input--price" id="event-price-${eventId}" type="text" name="event-price" value="${basePrice}">
+            <input class="event__input  event__input--price" id="event-price-${eventId}" name="event-price" value="${basePrice}" type="number" required>
           </div>
 
           <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
