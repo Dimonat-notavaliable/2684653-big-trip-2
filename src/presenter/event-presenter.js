@@ -2,6 +2,7 @@ import EventView from '../view/event-view.js';
 import EventEditView from '../view/event-edit-view.js';
 import { isEscapeKey } from '../utils/common.js';
 import { remove, render, replace } from '../framework/render.js';
+import { UserAction, UpdateType } from '../const.js';
 
 /**
  * @enum {string} Возможные состояния карточки события
@@ -106,11 +107,19 @@ export default class EventPresenter {
   };
 
   #handleFavouriteClick = () => {
-    this.#handleDataChange({...this.#event, isFavorite: !this.#event.isFavorite});
+    this.#handleDataChange(
+      UserAction.UPDATE_EVENT,
+      UpdateType.PATCH,
+      {...this.#event, isFavorite: !this.#event.isFavorite}
+    );
   };
 
   #handleFormSubmit = (event) => {
-    this.#handleDataChange(event);
+    this.#handleDataChange(
+      UserAction.UPDATE_EVENT,
+      UpdateType.MINOR,
+      event
+    );
     this.#replaceFormToRow();
   };
 

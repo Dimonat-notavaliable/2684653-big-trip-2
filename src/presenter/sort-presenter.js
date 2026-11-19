@@ -37,6 +37,10 @@ export default class SortPresenter {
     remove(prevSortComponent);
   }
 
+  destroy() {
+    remove(this.#sortComponent);
+  }
+
   #handleSortTypeChange = (sortType) => {
     this.#handleDataChange(sortType);
   };
