@@ -24,4 +24,18 @@ const SortType = {
   OFFER: 'offer'
 };
 
-export {EVENT_TYPES, DateFormat, FilterType, SortType};
+/** @enum {string} Перечисление возможных действий с событием */
+const UserAction = {
+  UPDATE_EVENT: 'UPDATE_EVENT',
+  ADD_EVENT: 'ADD_EVENT',
+  DELETE_EVENT: 'DELETE_EVENT'
+};
+
+/** @enum {string} Перечисление типов обновления */
+const UpdateType = {
+  PATCH: 'PATCH',
+  MINOR: 'MINOR',
+  MAJOR: 'MAJOR'
+};
+
+export {EVENT_TYPES, DateFormat, FilterType, SortType, UserAction, UpdateType};

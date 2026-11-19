@@ -1,4 +1,4 @@
-import { render, replace, remove } from '../framework/render.js';
+import { render, replace, remove, RenderPosition } from '../framework/render.js';
 import { generateSort } from '../mock/sort.js';
 import SortView from '../view/sort-view.js';
 
@@ -6,13 +6,13 @@ import SortView from '../view/sort-view.js';
 export default class SortPresenter {
   #sortOptions = null;
   #sortComponent = null;
-  #sortContainer = null;
+  #sortFollower = null;
   #sortType = null;
 
   #handleDataChange = null;
 
-  constructor({sortContainer, onDataChange}) {
-    this.#sortContainer = sortContainer;
+  constructor({sortFollower, onDataChange}) {
+    this.#sortFollower = sortFollower;
     this.#handleDataChange = onDataChange;
   }
 
@@ -29,12 +29,16 @@ export default class SortPresenter {
     });
 
     if (prevSortComponent === null) {
-      render(this.#sortComponent, this.#sortContainer);
+      render(this.#sortComponent, this.#sortFollower, RenderPosition.BEFOREBEGIN);
       return;
     } else {
       replace(this.#sortComponent, prevSortComponent);
     }
     remove(prevSortComponent);
+  }
+
+  destroy() {
+    remove(this.#sortComponent);
   }
 
   #handleSortTypeChange = (sortType) => {
