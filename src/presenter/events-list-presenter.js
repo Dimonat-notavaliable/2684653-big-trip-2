@@ -1,7 +1,7 @@
 import EventListView from '../view/event-list-view.js';
 import EventPresenter from './event-presenter.js';
 import SortPresenter from './sort-presenter.js';
-import { render, remove, RenderPosition } from '../framework/render.js';
+import { render, remove } from '../framework/render.js';
 import NoEventView from '../view/no-event-view.js';
 import { eventSort } from '../utils/sort.js';
 import { SortType, UserAction, UpdateType, FilterType } from '../const.js';
@@ -125,7 +125,7 @@ export default class EventsListPresenter {
   }
 
   #renderLoading() {
-    render(this.#loadingComponent, this.#eventsListContainer, RenderPosition.AFTERBEGIN);
+    render(this.#loadingComponent, this.#eventsListContainer);
   }
 
   #renderEvent(event) {
