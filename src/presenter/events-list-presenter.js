@@ -7,6 +7,7 @@ import { eventSort } from '../utils/sort.js';
 import { SortType, UserAction, UpdateType, FilterType } from '../const.js';
 import { filter } from '../utils/filter.js';
 import NewEventPresenter from './new-event-presenter.js';
+import LoadingView from '../view/loading-view.js';
 
 export default class EventsListPresenter {
   #eventsListContainer = null;
@@ -22,6 +23,9 @@ export default class EventsListPresenter {
   #newEventPresenter = null;
 
   #eventPresenters = new Map();
+
+  #isLoading = true;
+  #loadingComponent = new LoadingView();
 
   constructor ({eventsListContaier, eventModel, filterModel, onNewEventDestroy}) {
     this.#eventsListContainer = eventsListContaier;
@@ -92,6 +96,11 @@ export default class EventsListPresenter {
         this.#clearEventsList({resetSortType: true});
         this.#renderEventsList();
         break;
+      case UpdateType.INIT:
+        this.#isLoading = false;
+        remove(this.#loadingComponent);
+        this.#renderEventsList();
+        break;
     }
   };
 
@@ -113,6 +122,10 @@ export default class EventsListPresenter {
     });
 
     this.#sortPresenter.init(this.#currentSortType);
+  }
+
+  #renderLoading() {
+    render(this.#loadingComponent, this.#eventsListContainer);
   }
 
   #renderEvent(event) {
@@ -149,6 +162,7 @@ export default class EventsListPresenter {
     this.#sortPresenter = null;
 
     remove(this.#noEventsComponent);
+    remove(this.#loadingComponent);
 
     if (resetSortType) {
       this.#currentSortType = SortType.DAY;
@@ -156,6 +170,11 @@ export default class EventsListPresenter {
   }
 
   #renderEventsList() {
+    if (this.#isLoading) {
+      this.#renderLoading();
+      return;
+    }
+
     if (this.events.length === 0) {
       this.#renderNoEvents();
       return;

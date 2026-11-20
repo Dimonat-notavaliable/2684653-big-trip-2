@@ -1,5 +1,5 @@
 import { EVENT_TYPES, DateFormat } from '../const.js';
-import { titleString, humanizeDate, parseDateToISO } from '../utils/common.js';
+import { titleString, humanizeDate } from '../utils/common.js';
 import { getOfferSlug, getTypeOffers } from '../utils/offer.js';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import flatpickr from 'flatpickr';
@@ -10,8 +10,8 @@ const FLATPICKR_FORMAT = 'd/m/y H:i';
 
 const BLANK_EVENT = {
   basePrice: 0,
-  dateFrom: parseDateToISO(new Date()),
-  dateTo: parseDateToISO(new Date()),
+  dateFrom: new Date().toISOString(),
+  dateTo: new Date().toISOString(),
   destination: null,
   isFavorite: false,
   offers: [],
@@ -226,7 +226,7 @@ export default class EventEditView extends AbstractStatefulView {
 
   #offerChangeHandler = (evt) => {
     evt.preventDefault();
-    const offerId = parseInt(evt.target.dataset.offerId, 10);
+    const offerId = evt.target.dataset.offerId;
     if (evt.target.checked) {
       this._setState({
         offers: [...this._state.offers, offerId]
@@ -264,14 +264,14 @@ export default class EventEditView extends AbstractStatefulView {
   #dateFromChangeHandler = ([userDate]) => {
     this.#dateToPicker.set('minDate', userDate);
     this._setState({
-      dateFrom: parseDateToISO(userDate)
+      dateFrom: userDate.toISOString()
     });
   };
 
   #dateToChangeHandler = ([userDate]) => {
     this.#dateFromPicker.set('maxDate', userDate);
     this._setState({
-      dateTo: parseDateToISO(userDate)
+      dateTo: userDate.toISOString()
     });
   };
 
