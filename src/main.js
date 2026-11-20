@@ -6,12 +6,18 @@ import { render, RenderPosition } from './framework/render.js';
 import FilterModel from './model/filter-model.js';
 import FilterPresenter from './presenter/filter-presenter.js';
 import NewEventButtonView from './view/new-event-button-view.js';
+import EventsApiService from './api/events-api-service.js';
 
 const siteTripMainElement = document.querySelector('.trip-main');
 const siteFiltersElement = siteTripMainElement.querySelector('.trip-controls__filters');
 const siteEventsElement = document.querySelector('.trip-events');
 
-const eventModel = new EventModel();
+const AUTHORIZATION = 'Basic RGltb25hdDpRd2VydHl1aW8=';
+const END_POINT = 'https://22.objects.htmlacademy.pro/big-trip';
+
+const eventModel = new EventModel({
+  apiService: new EventsApiService(END_POINT, AUTHORIZATION)
+});
 const filterModel = new FilterModel();
 
 const eventsListPresenter = new EventsListPresenter({
@@ -32,10 +38,14 @@ const newEventButtonComponent = new NewEventButtonView({
 });
 
 render(new TripInfoView(), siteTripMainElement, RenderPosition.AFTERBEGIN);
-render(newEventButtonComponent, siteTripMainElement);
 
 filterPresenter.init();
 eventsListPresenter.init();
+eventModel.init()
+  .finally(() => {
+    render(newEventButtonComponent, siteTripMainElement);
+  });
+
 
 function handleNewEventFormOpen() {
   eventsListPresenter.openNewEventForm();

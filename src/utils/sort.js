@@ -1,8 +1,4 @@
 import { SortType } from '../const.js';
-import { getEventPrice } from './event.js';
-import EventModel from '../model/event-model.js';
-
-const eventModel = new EventModel();
 
 
 const compareEventStart = (eventA, eventB) => new Date(eventB.dateFrom) - new Date(eventA.dateFrom);
@@ -11,7 +7,7 @@ const compareEventDuration = (eventA, eventB) => {
   const eventBDuration = new Date(eventB.dateTo) - new Date(eventB.dateFrom);
   return eventBDuration - eventADuration;
 };
-const compareEventPrice = (eventA, eventB) => getEventPrice(eventB, eventModel.getEventOffers(eventB)) - getEventPrice(eventA, eventModel.getEventOffers(eventA));
+const compareEventPrice = (eventA, eventB) => eventB.basePrice - eventA.basePrice;
 
 const eventSort = {
   [SortType.DAY]: compareEventStart,
