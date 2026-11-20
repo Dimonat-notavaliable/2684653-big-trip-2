@@ -8,6 +8,12 @@ import { SortType, UserAction, UpdateType, FilterType } from '../const.js';
 import { filter } from '../utils/filter.js';
 import NewEventPresenter from './new-event-presenter.js';
 import LoadingView from '../view/loading-view.js';
+import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
+
+const TimeLimit = {
+  LOWER_LIMIT: 350,
+  UPPER_LIMIT: 1000,
+};
 
 export default class EventsListPresenter {
   #eventsListContainer = null;
@@ -26,6 +32,11 @@ export default class EventsListPresenter {
 
   #isLoading = true;
   #loadingComponent = new LoadingView();
+
+  #uiBlocker = new UiBlocker({
+    lowerLimit: TimeLimit.LOWER_LIMIT,
+    upperLimit: TimeLimit.UPPER_LIMIT
+  });
 
   constructor ({eventsListContaier, eventModel, filterModel, onNewEventDestroy}) {
     this.#eventsListContainer = eventsListContaier;
@@ -69,24 +80,44 @@ export default class EventsListPresenter {
     this.#eventPresenters.forEach((presenter) => presenter.resetView());
   };
 
-  #handleViewAction = (actionType, updateType, updated) => {
+  #handleViewAction = async (actionType, updateType, updated) => {
+    this.#uiBlocker.block();
+
     switch (actionType) {
       case UserAction.UPDATE_EVENT:
-        this.#eventModel.updateEvent(updateType, updated);
+        this.#eventPresenters.get(updated.id).setSaving();
+        try {
+          await this.#eventModel.updateEvent(updateType, updated);
+        } catch (err) {
+          this.#eventPresenters.get(updated.id).setAborting();
+        }
         break;
       case UserAction.ADD_EVENT:
-        this.#eventModel.addEvent(updateType, updated);
+        this.#newEventPresenter.setSaving();
+        try {
+          await this.#eventModel.addEvent(updateType, updated);
+        } catch (err) {
+          this.#newEventPresenter.setAborting();
+        }
         break;
       case UserAction.DELETE_EVENT:
-        this.#eventModel.deleteEvent(updateType, updated);
+        this.#eventPresenters.get(updated.id).setDeleting();
+        try {
+          await this.#eventModel.deleteEvent(updateType, updated);
+        } catch (err) {
+          this.#eventPresenters.get(updated.id).setAborting();
+        }
         break;
     }
+
+    this.#uiBlocker.unblock();
   };
 
   #handleModelEvent = (updateType, updated) => {
     switch (updateType) {
       case UpdateType.PATCH:
         this.#eventPresenters.get(updated.id).init(updated);
+        this.#eventPresenters.get(updated.id).resetView();
         break;
       case UpdateType.MINOR:
         this.#clearEventsList();
@@ -158,6 +189,7 @@ export default class EventsListPresenter {
     this.#eventPresenters.forEach((presenter) => presenter.destroy());
     this.#eventPresenters.clear();
 
+    this.#newEventPresenter.destroy();
     this.#sortPresenter.destroy();
     this.#sortPresenter = null;
 
