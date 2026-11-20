@@ -3,7 +3,9 @@ import ApiService from '../framework/api-service.js';
 /** @enum {string} Методы для взаимодействия с сервисом */
 const Method = {
   GET: 'GET',
-  PUT: 'PUT'
+  PUT: 'PUT',
+  POST: 'POST',
+  DELETE: 'DELETE'
 };
 
 export default class EventsApiService extends ApiService {
@@ -33,6 +35,28 @@ export default class EventsApiService extends ApiService {
     const parsedResponse = await ApiService.parseResponse(response);
 
     return parsedResponse;
+  }
+
+  async addEvent(event) {
+    const response = await this._load({
+      url: 'points',
+      method: Method.POST,
+      body: JSON.stringify(this.#adaptEventToServer(event)),
+      headers: new Headers({'Content-type': 'application/json'})
+    });
+
+    const parsedResponse = await ApiService.parseResponse(response);
+
+    return parsedResponse;
+  }
+
+  async deleteEvent(event) {
+    const response = await this._load({
+      url: `points/${event.id}`,
+      method: Method.POST
+    });
+
+    return response;
   }
 
   #adaptEventToServer(event) {

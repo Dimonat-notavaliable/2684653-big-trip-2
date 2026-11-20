@@ -2,7 +2,6 @@ import EventEditView from '../view/event-edit-view.js';
 import { isEscapeKey } from '../utils/common.js';
 import { remove, render, RenderPosition } from '../framework/render.js';
 import { UserAction, UpdateType } from '../const.js';
-import { nanoid } from 'nanoid';
 
 
 export default class NewEventPresenter {
@@ -51,13 +50,31 @@ export default class NewEventPresenter {
     document.removeEventListener('keydown', this.#escKeyDownHandler);
   }
 
+  setSaving() {
+    this.#eventEditComponent.updateElement({
+      isDisabled: true,
+      isSaving: true,
+    });
+  }
+
+  setAborting() {
+    const resetFormState = () => {
+      this.#eventEditComponent.updateElement({
+        isDisabled: false,
+        isSaving: false,
+        isDeleting: false
+      });
+    };
+
+    this.#eventEditComponent.shake(resetFormState);
+  }
+
   #handleFormSubmit = (newTask) => {
     this.#handleDataChange(
       UserAction.ADD_EVENT,
       UpdateType.MINOR,
-      {...newTask, id: nanoid()}
+      newTask
     );
-    this.destroy();
   };
 
   #handleDeleteClick = () => {
