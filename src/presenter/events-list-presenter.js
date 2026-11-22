@@ -76,76 +76,6 @@ export default class EventsListPresenter {
     this.#renderEventsList();
   }
 
-  #handleModeChange = () => {
-    this.#eventPresenters.forEach((presenter) => presenter.resetView());
-  };
-
-  #handleViewAction = async (actionType, updateType, updated) => {
-    this.#uiBlocker.block();
-
-    switch (actionType) {
-      case UserAction.UPDATE_EVENT:
-        this.#eventPresenters.get(updated.id).setSaving();
-        try {
-          await this.#eventModel.updateEvent(updateType, updated);
-        } catch (err) {
-          this.#eventPresenters.get(updated.id).setAborting();
-        }
-        break;
-      case UserAction.ADD_EVENT:
-        this.#newEventPresenter.setSaving();
-        try {
-          await this.#eventModel.addEvent(updateType, updated);
-        } catch (err) {
-          this.#newEventPresenter.setAborting();
-        }
-        break;
-      case UserAction.DELETE_EVENT:
-        this.#eventPresenters.get(updated.id).setDeleting();
-        try {
-          await this.#eventModel.deleteEvent(updateType, updated);
-        } catch (err) {
-          this.#eventPresenters.get(updated.id).setAborting();
-        }
-        break;
-    }
-
-    this.#uiBlocker.unblock();
-  };
-
-  #handleModelEvent = (updateType, updated) => {
-    switch (updateType) {
-      case UpdateType.PATCH:
-        this.#eventPresenters.get(updated.id).init(updated);
-        this.#eventPresenters.get(updated.id).resetView();
-        break;
-      case UpdateType.MINOR:
-        this.#clearEventsList();
-        this.#renderEventsList();
-        break;
-      case UpdateType.MAJOR:
-        this.#clearEventsList({resetSortType: true});
-        this.#renderEventsList();
-        break;
-      case UpdateType.INIT:
-        this.#isLoading = false;
-        remove(this.#loadingComponent);
-        this.#renderEventsList();
-        break;
-    }
-  };
-
-  #handleSortTypeChange = (sortType) => {
-    if (this.#currentSortType === sortType) {
-      return;
-    }
-
-    this.#currentSortType = sortType;
-
-    this.#clearEventsList();
-    this.#renderEventsList({resetSortType: true});
-  };
-
   #renderSort() {
     this.#sortPresenter = new SortPresenter({
       sortFollower: this.#eventsListComponent.element,
@@ -217,4 +147,74 @@ export default class EventsListPresenter {
     this.#renderSort();
     this.#renderEvents(this.events);
   }
+
+  #handleModeChange = () => {
+    this.#eventPresenters.forEach((presenter) => presenter.resetView());
+  };
+
+  #handleViewAction = async (actionType, updateType, updated) => {
+    this.#uiBlocker.block();
+
+    switch (actionType) {
+      case UserAction.UPDATE_EVENT:
+        this.#eventPresenters.get(updated.id).setSaving();
+        try {
+          await this.#eventModel.updateEvent(updateType, updated);
+        } catch (err) {
+          this.#eventPresenters.get(updated.id).setAborting();
+        }
+        break;
+      case UserAction.ADD_EVENT:
+        this.#newEventPresenter.setSaving();
+        try {
+          await this.#eventModel.addEvent(updateType, updated);
+        } catch (err) {
+          this.#newEventPresenter.setAborting();
+        }
+        break;
+      case UserAction.DELETE_EVENT:
+        this.#eventPresenters.get(updated.id).setDeleting();
+        try {
+          await this.#eventModel.deleteEvent(updateType, updated);
+        } catch (err) {
+          this.#eventPresenters.get(updated.id).setAborting();
+        }
+        break;
+    }
+
+    this.#uiBlocker.unblock();
+  };
+
+  #handleModelEvent = (updateType, updated) => {
+    switch (updateType) {
+      case UpdateType.PATCH:
+        this.#eventPresenters.get(updated.id).init(updated);
+        this.#eventPresenters.get(updated.id).resetView();
+        break;
+      case UpdateType.MINOR:
+        this.#clearEventsList();
+        this.#renderEventsList();
+        break;
+      case UpdateType.MAJOR:
+        this.#clearEventsList({resetSortType: true});
+        this.#renderEventsList();
+        break;
+      case UpdateType.INIT:
+        this.#isLoading = false;
+        remove(this.#loadingComponent);
+        this.#renderEventsList();
+        break;
+    }
+  };
+
+  #handleSortTypeChange = (sortType) => {
+    if (this.#currentSortType === sortType) {
+      return;
+    }
+
+    this.#currentSortType = sortType;
+
+    this.#clearEventsList();
+    this.#renderEventsList({resetSortType: true});
+  };
 }

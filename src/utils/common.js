@@ -9,7 +9,7 @@ const titleString = (string) => {
   return capitalized.join(' ');
 };
 
-const humanizeDate = (datetime, format) => dayjs(datetime).format(format);
+const humanizeDate = (datetime, format) => datetime instanceof Date ? dayjs(datetime).format(format) : dayjs(new Date(datetime)).format(format);
 
 /**
  * Проверяет, является ли нажатая клавиша клавишей Escape.

@@ -224,6 +224,33 @@ export default class EventEditView extends AbstractStatefulView {
     );
   }
 
+  #setDatePickers() {
+    const startDate = new Date(this._state.dateFrom);
+    const endDate = new Date(this._state.dateTo);
+
+    this.#dateFromPicker = flatpickr(
+      this.element.querySelector('input[name="event-start-time"]'),
+      {
+        enableTime: true,
+        dateFormat: FLATPICKR_FORMAT,
+        defaultDate: startDate,
+        maxDate: endDate,
+        onChange: this.#dateFromChangeHandler
+      }
+    );
+
+    this.#dateToPicker = flatpickr(
+      this.element.querySelector('input[name="event-end-time"]'),
+      {
+        enableTime: true,
+        dateFormat: FLATPICKR_FORMAT,
+        defaultDate: endDate,
+        minDate: startDate,
+        onChange: this.#dateToChangeHandler
+      }
+    );
+  }
+
   #typeChangeHandler = (evt) => {
     evt.preventDefault();
     if (evt.target.tagName !== 'INPUT') {
@@ -278,6 +305,20 @@ export default class EventEditView extends AbstractStatefulView {
     this.#handleFormSubmit(EventEditView.parseStateToEvent(this._state));
   };
 
+  #dateFromChangeHandler = ([userDate]) => {
+    this.#dateToPicker.set('minDate', userDate);
+    this._setState({
+      dateFrom: userDate.toISOString()
+    });
+  };
+
+  #dateToChangeHandler = ([userDate]) => {
+    this.#dateFromPicker.set('maxDate', userDate);
+    this._setState({
+      dateTo: userDate.toISOString()
+    });
+  };
+
   static parseEventToState(event) {
     return {
       ...event,
@@ -295,46 +336,5 @@ export default class EventEditView extends AbstractStatefulView {
     delete event.isDeleting;
 
     return event;
-  }
-
-  #dateFromChangeHandler = ([userDate]) => {
-    this.#dateToPicker.set('minDate', userDate);
-    this._setState({
-      dateFrom: userDate.toISOString()
-    });
-  };
-
-  #dateToChangeHandler = ([userDate]) => {
-    this.#dateFromPicker.set('maxDate', userDate);
-    this._setState({
-      dateTo: userDate.toISOString()
-    });
-  };
-
-  #setDatePickers() {
-    const startDate = new Date(this._state.dateFrom);
-    const endDate = new Date(this._state.dateTo);
-
-    this.#dateFromPicker = flatpickr(
-      this.element.querySelector('input[name="event-start-time"]'),
-      {
-        enableTime: true,
-        dateFormat: FLATPICKR_FORMAT,
-        defaultDate: startDate,
-        maxDate: endDate,
-        onChange: this.#dateFromChangeHandler
-      }
-    );
-
-    this.#dateToPicker = flatpickr(
-      this.element.querySelector('input[name="event-end-time"]'),
-      {
-        enableTime: true,
-        dateFormat: FLATPICKR_FORMAT,
-        defaultDate: endDate,
-        minDate: startDate,
-        onChange: this.#dateToChangeHandler
-      }
-    );
   }
 }

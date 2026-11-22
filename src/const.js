@@ -4,6 +4,7 @@ const EVENT_TYPES = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-i
 const DateFormat = {
   ONLY_TIME: 'HH:mm',
   ONLY_DATE: 'MMM D',
+  INFO: 'D MMM',
   FORM: 'DD/MM/YY HH:mm',
 };
 
