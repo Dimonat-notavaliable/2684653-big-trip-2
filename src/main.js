@@ -1,8 +1,8 @@
 import EventModel from './model/event-model.js';
-import TripInfoView from './view/trip-info-view.js';
+import TripInfoPresenter from './presenter/trip-info-presenter.js';
 import EventsListPresenter from './presenter/events-list-presenter.js';
 
-import { render, RenderPosition } from './framework/render.js';
+import { render } from './framework/render.js';
 import FilterModel from './model/filter-model.js';
 import FilterPresenter from './presenter/filter-presenter.js';
 import NewEventButtonView from './view/new-event-button-view.js';
@@ -33,13 +33,17 @@ const filterPresenter = new FilterPresenter({
   eventModel
 });
 
+const tripInfoPresenter = new TripInfoPresenter({
+  tripInfoContainer: siteTripMainElement,
+  eventModel
+});
+
 const newEventButtonComponent = new NewEventButtonView({
   onClick: handleNewEventFormOpen
 });
 
-render(new TripInfoView(), siteTripMainElement, RenderPosition.AFTERBEGIN);
-
 filterPresenter.init();
+tripInfoPresenter.init();
 eventsListPresenter.init();
 eventModel.init()
   .finally(() => {

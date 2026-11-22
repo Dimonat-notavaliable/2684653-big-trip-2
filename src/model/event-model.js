@@ -91,23 +91,6 @@ export default class EventModel extends Observable {
     return this.#destinations.find(({id}) => id === event.destination);
   }
 
-  #adaptToClient(event) {
-    const adapted = {
-      ...event,
-      basePrice: event['base_price'],
-      dateFrom: event['date_from'],
-      dateTo: event['date_to'],
-      isFavorite: event['is_favorite']
-    };
-
-    delete adapted['base_price'];
-    delete adapted['date_from'];
-    delete adapted['date_to'];
-    delete adapted['is_favorite'];
-
-    return adapted;
-  }
-
   async init() {
     try {
       const events = await this.#apiService.events;
@@ -129,5 +112,22 @@ export default class EventModel extends Observable {
     }
 
     this._notify(UpdateType.INIT);
+  }
+
+  #adaptToClient(event) {
+    const adapted = {
+      ...event,
+      basePrice: event['base_price'],
+      dateFrom: event['date_from'],
+      dateTo: event['date_to'],
+      isFavorite: event['is_favorite']
+    };
+
+    delete adapted['base_price'];
+    delete adapted['date_from'];
+    delete adapted['date_to'];
+    delete adapted['is_favorite'];
+
+    return adapted;
   }
 }
